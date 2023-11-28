@@ -1,21 +1,37 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
-    <meta charset="utf-8">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Fisheye</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
   </head>
   <body>
     <header>
-        <img src="assets/images/logo.png" class="logo" alt="fisheye logo"/>
-        <h1>Nos photographes</h1>
+      <a href="index.html">
+        <img src="assets/images/logo.png" class="logo" alt="fisheye logo" />
+      </a>
+      <h1>Nos photographes</h1>
     </header>
     <main id="main">
-        <div class="photographer_section"></div>
+      <div class="photographer_section"></div>
     </main>
-    <script src="scripts/templates/photographer.js"></script>
-    <script src="scripts/pages/index.js"></script>
+
+    <!-- Models -->
+    <script src="/scripts/models/Photographer.js"></script>
+
+    <!-- Templates -->
+    <script src="/scripts/templates/PhotographerCard.js"></script>
+
+    <!-- Api -->
+    <script src="/scripts/api/Api.js"></script>
+
+    <!-- Entry point -->
+    <script src="/scripts/App.js"></script>
   </body>
 </html>
