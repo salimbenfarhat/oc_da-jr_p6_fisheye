@@ -3,7 +3,7 @@ class App {
     this.$photographersWrapper = document.querySelector(
       ".photographer_section"
     );
-    this.photographersApi = new PhotographerApi("/data/photographers.json");
+    this.photographersApi = new PhotographerApi("data/photographers.json");
   }
 
   async main() {
