@@ -3,7 +3,16 @@ class App {
     this.$photographersWrapper = document.querySelector(
       ".photographer_section"
     );
-    this.photographersApi = new PhotographerApi("../data/photographers.json");
+    const isLocal =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+    const isLocalPort5500 = isLocal && window.location.port === "5500";
+    const githubRepo = "/oc_da-jr_p6_fisheye";
+    const baseUrl = isLocalPort5500 ? "" : githubRepo;
+
+    this.photographersApi = new PhotographerApi(
+      `${baseUrl}/data/photographers.json`
+    );
   }
 
   async main() {
