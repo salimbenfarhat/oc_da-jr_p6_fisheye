@@ -16,6 +16,7 @@ header {
 h1 {
   color: #901c1c;
   margin-right: 100px;
+  font-size: 36px;
 }
 
 .logo {
@@ -55,14 +56,36 @@ h1 {
   border-radius: 50%;
 }
 
-.photographer_section article h2 {
+.photograph-header {
+  font-weight: 400;
+}
+.photographer_section article h2,
+.photograph-header h1 {
   color: #d3573c;
+  margin: 16px 0 6px 0;
+}
+
+.photographer_section article h2 {
   font-size: 36px;
-  margin: 16px 0;
+}
+
+.photograph-header h1 {
+  font-size: 64px;
+}
+
+.photograph-header h2 {
+  font-size: 24px;
+  color: #901c1c;
+}
+
+.photograph-header p {
+  font-size: 18px;
+  color: #525252;
 }
 
 .info {
-  line-height: 16px;
+  line-height: 10px;
+  font-weight: 400;
 }
 
 .photographer_section article span {
