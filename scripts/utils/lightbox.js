@@ -31,26 +31,29 @@ function displayLightbox(currentMedia, allMedia) {
     lightboxContent.removeChild(lightboxContent.firstChild);
   }
 
-  let lightboxElement;
+  let lightboxMediaElement;
 
-  console.log("curent media :", currentMedia);
-  console.log("curent media type :", currentMedia.type);
+  let lightboxTitleElement;
+
   if (currentMedia.type === "image") {
-    lightboxElement = document.createElement("img");
-    lightboxElement.src = currentMedia.src;
-    lightboxElement.alt = "Image en plein écran";
-    lightboxElement.classList.add("lightbox-media");
+    lightboxMediaElement = document.createElement("img");
+    lightboxMediaElement.src = currentMedia.src;
+    lightboxMediaElement.alt = "Image en plein écran";
+    lightboxMediaElement.classList.add("lightbox-media");
   } else if (currentMedia.type === "video") {
-    lightboxElement = document.createElement("video");
-    lightboxElement.src = currentMedia.src;
-    lightboxElement.alt = "Vidéo en plein écran";
-    lightboxElement.controls = true;
-    lightboxElement.classList.add("lightbox-media");
+    lightboxMediaElement = document.createElement("video");
+    lightboxMediaElement.src = currentMedia.src;
+    lightboxMediaElement.alt = "Vidéo en plein écran";
+    lightboxMediaElement.controls = true;
+    lightboxMediaElement.classList.add("lightbox-media");
   } else {
     throw new Error("Le type du média courant n'est pas reconnu");
   }
+  lightboxTitleElement = document.createElement("h2");
+  lightboxTitleElement.textContent = currentMedia.title;
 
-  lightboxContent.appendChild(lightboxElement);
+  lightboxContent.appendChild(lightboxMediaElement);
+  lightboxContent.appendChild(lightboxTitleElement);
 
   const leftArrow = document.createElement("i");
   leftArrow.className = "fas fa-chevron-left arrow";
@@ -72,8 +75,6 @@ function displayLightbox(currentMedia, allMedia) {
   currentIndex = filteredMedia.findIndex(
     (media) => media.id === currentMedia.id
   );
-
-  console.log("current index:", currentIndex);
 }
 
 function closeLightbox() {

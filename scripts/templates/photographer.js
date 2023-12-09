@@ -67,6 +67,7 @@ function photographerTemplate(data) {
   function displayPhotographerGallery(photographer, photographerMedia) {
     const gallery = document.querySelector(".gallery");
     const mediaFactory = new MediaFactory();
+
     if (gallery && photographer) {
       const photographerId = photographer.id;
       const photographerMediaFiltered = photographerMedia.filter(
@@ -82,20 +83,17 @@ function photographerTemplate(data) {
         const mediaElement = document.createElement(
           media.type === "image" ? "img" : "video"
         );
-        const card = document.createElement("article");
         const mediaLink = document.createElement("a");
+        const card = document.createElement("article");
         const figure = document.createElement("figure");
+        const mediaContainer = document.createElement("div");
         const figcaption = document.createElement("figcaption");
         const titleElement = document.createElement("h2");
         const likesNumber = document.createElement("span");
         const heartIcon = document.createElement("i");
-        mediaLink.setAttribute("role", "link");
-        mediaLink.setAttribute("href", "#");
-        mediaLink.setAttribute("data-media", media.id);
 
-        mediaLink.onclick = function () {
-          displayLightbox(media, photographerMediaFiltered);
-        };
+        mediaContainer.classList.add("media-container");
+        mediaContainer.appendChild(mediaElement);
 
         mediaElement.src = media.src;
         mediaElement.alt = media.title;
@@ -106,11 +104,19 @@ function photographerTemplate(data) {
         likesNumber.appendChild(heartIcon);
         figcaption.appendChild(titleElement);
         figcaption.appendChild(likesNumber);
-        figure.appendChild(mediaLink);
-        mediaLink.appendChild(mediaElement);
+        figure.appendChild(mediaContainer);
         figure.appendChild(figcaption);
         card.appendChild(figure);
-        gallery.appendChild(card);
+
+        mediaLink.setAttribute("role", "link");
+        mediaLink.setAttribute("href", "#");
+        mediaLink.setAttribute("data-media", media.id);
+        mediaLink.onclick = function () {
+          displayLightbox(media, photographerMediaFiltered);
+        };
+
+        mediaLink.appendChild(card);
+        gallery.appendChild(mediaLink);
       });
     }
   }

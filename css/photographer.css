@@ -134,17 +134,19 @@
   justify-content: flex-start;
 }
 
-.gallery article {
+.gallery a {
   width: calc(33.33% - 10px);
   margin: 10px 5px 20px 5px;
+  display: block;
+  text-decoration: none;
 }
 
-.gallery article:hover {
+.gallery a:hover {
   cursor: pointer;
 }
 
-.gallery article:hover img,
-.gallery article:hover video {
+.gallery a img:hover,
+.gallery a video:hover {
   transform: scale(1.05);
 }
 
@@ -153,6 +155,12 @@
   position: relative;
   transition: all 0.2s ease-in-out;
   overflow: hidden;
+  border-radius: 10px;
+}
+
+.gallery .media-container {
+  overflow: hidden;
+  border-radius: 10px;
 }
 
 .gallery img,
@@ -160,10 +168,9 @@
   display: block;
   width: 100%;
   height: 350px;
-  border-radius: 10px;
   object-fit: cover;
   object-position: center;
-  transform-origin: center center;
+  transform-origin: center bottom;
   transition: transform 0.3s ease;
 }
 
