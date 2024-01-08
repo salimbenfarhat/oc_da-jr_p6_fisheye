@@ -34,6 +34,20 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  padding: 2em 0;
+}
+
+.filter label {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.hide-menu {
+  display: none;
+}
+
+.display-menu {
+  display: block;
 }
 
 .dropdown {
@@ -72,7 +86,6 @@
 }
 
 .dropdown-content {
-  display: none;
   position: absolute;
   z-index: 1;
   background-color: #901c1c;
@@ -82,6 +95,15 @@
   margin-top: -5px;
   font-size: 18px;
   font-weight: 700;
+  padding: 0;
+}
+
+.dropdown-content li {
+  list-style: none;
+}
+
+.dropdown-content li:first-child {
+  display: none; /* ou tout autre style que vous souhaitez appliquer */
 }
 
 .dropdown-content button {
@@ -109,16 +131,12 @@
   background-color: #fff;
 }
 
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
 .dropdown-content button:hover {
   background-color: #db8876;
   color: black;
+  border-radius: 0 0 5px 5px;
 }
 
-/* Style au survol du bouton principal */
 .dropbtn:hover {
   background-color: #db8876;
   color: black;
@@ -129,24 +147,24 @@
 }
 
 .gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 30px 60px;
+  margin-bottom: 4em;
+}
+
+.gallery article {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.gallery a {
-  width: calc(33.33% - 10px);
-  margin: 10px 5px 20px 5px;
-  display: block;
-  text-decoration: none;
-}
-
-.gallery a:hover {
+.gallery article:hover {
   cursor: pointer;
 }
 
-.gallery a img:hover,
-.gallery a video:hover {
+.gallery article img:hover,
+.gallery article video:hover {
   transform: scale(1.05);
 }
 
@@ -160,7 +178,9 @@
 
 .gallery .media-container {
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 5px;
+  display: block;
+  text-decoration: none;
 }
 
 .gallery img,
@@ -202,6 +222,7 @@
   color: #db8876;
 }
 
+.gallery figcaption span i.liked,
 .gallery figcaption span i:hover {
   color: #901c1c;
 }
@@ -237,7 +258,7 @@
 .modal {
   border-radius: 5px;
   background-color: #db8876;
-  width: 50%;
+  width: 30%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -247,35 +268,36 @@
   position: relative;
 }
 
-.lightbox {
-  position: relative; /* Assurez-vous que le conteneur de la lightbox a une position relative */
-}
-
 .modal header,
 .lightbox header {
-  justify-content: space-between;
   width: 100%;
+}
+
+.modal header {
+  margin: 0 0 1em 0;
 }
 
 .lightbox header {
   flex-direction: row-reverse;
+  margin: 0 0 -4.8em 0;
 }
 
 .modal header img {
   cursor: pointer;
+  width: 32px;
+  margin-bottom: 2em;
 }
 
 .modal header h2,
 .lightbox header h2 {
-  font-size: 64px;
+  font-size: 32px;
   font-weight: normal;
   text-align: left;
-  margin-bottom: 3em;
 }
 
 .lightbox-media {
-  width: 525px;
-  height: 450px;
+  width: 600px;
+  height: 514px;
   border-radius: 5px;
   object-fit: cover;
   margin-bottom: 20px;
@@ -285,19 +307,17 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 24px; /* Ajustez la taille de la police selon vos besoins */
-  color: white; /* Ajustez la couleur de la flèche selon vos besoins */
+  font-size: 42px;
+  color: #901c1c;
   cursor: pointer;
 }
 
 .fa-chevron-left {
-  left: 10px;
-  color: red;
+  left: 1em;
 }
 
 .fa-chevron-right {
-  right: 10px;
-  color: red;
+  right: 1em;
 }
 
 form {
@@ -309,7 +329,7 @@ form {
 
 form label {
   color: #312e2e;
-  font-size: 36px;
+  font-size: 24px;
 }
 
 form div {
@@ -329,11 +349,11 @@ form textarea {
 }
 
 form input {
-  height: 68px;
+  height: 50px;
 }
 
 form textarea {
-  height: 178px;
+  height: 89px;
 }
 
 #lightbox_modal {
@@ -350,7 +370,7 @@ form textarea {
 
 .lightbox {
   background-color: #fff;
-  width: 50%;
+  width: 40%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -358,4 +378,11 @@ form textarea {
   padding: 35px;
   margin: auto;
   position: relative;
+}
+
+#lightboxContent h2 {
+  font-weight: 400;
+  font-size: 24px;
+  color: #901c1c;
+  margin: 0;
 }
