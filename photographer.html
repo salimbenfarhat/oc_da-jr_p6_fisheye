@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -17,22 +17,38 @@
   </head>
   <body>
     <header>
-      <a href="index.html" title="Fisheye Home page">
+      <a href="index.html" title="Fisheye Home page" tabindex="1">
         <img src="assets/images/logo.png" class="logo" alt="fisheye logo" />
       </a>
     </header>
     <main id="main">
       <div class="photograph-header">
         <div class="photograph-info"></div>
-        <button class="contact_button" onclick="displayModal()">
+        <button class="contact_button" alt="Contact Me" tabindex="2" onclick="displayModal()">
           Contactez-moi
         </button>
       </div>
       <div class="photograph-gallery">
+        <div class="filter">
+          <label>Trier par :</label>
+          <div class="dropdown" role="listbox" aria-haspopup="listbox" aria-expanded="false">
+            <button class="dropbtn" alt="Order by" tabindex="10" id="submitContactModalFormBtn">
+              Popularité
+              <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
+            </button>
+            <ul class="dropdown-content hide-menu" role="listbox" aria-activedescendant="btn-popularity">
+              <li>
+                <button id="btn-popularity" role="option" aria-selected="true">Popularité</button>
+              </li>
+              <li><button id="btn-date" role="option" aria-selected="false">Date</button></li>
+              <li><button id="btn-title" role="option" aria-selected="false">Titre</button></li>
+            </ul>
+          </div>
+        </div>
         <div class="gallery"></div>
         <div class="gallery-bottom-bar">
-          <span>297 081 <i class="fas fa-heart"></i></span>
-          <span>300€ / jour</span>
+          <span id="totalLikes"></span>
+          <span id="price"></span>
         </div>
       </div>
     </main>
@@ -42,33 +58,34 @@
         aria-hidden="true"
         role="dialog"
         aria-describedby="modalTitle"
+        tabindex="-1"
       >
         <header>
           <h2 id="modalTitle">Contactez-moi</h2>
-          <img src="assets/icons/close.svg" onclick="closeModal()" />
+          <img tabindex="3"
+            alt="Icone de fermeture de la modal de contact"
+            src="assets/icons/close.svg"
+            onclick="closeModal()"
+          />
         </header>
         <form>
           <div>
             <label for="prenom">Prénom</label>
-            <input
-              type="text"
-              name="prenom"
-              id="prenom"
-              autocomplete="given-name"
-            />
+            <input tabindex="4" type="text" name="prenom" id="prenom" autocomplete="given-name" />
             <label for="nom">Nom</label>
-            <input type="text" name="nom" id="nom" autocomplete="family-name" />
+            <input tabindex="5" type="text" name="nom" id="nom" autocomplete="family-name" />
             <label for="email">Email</label>
-            <input type="email" name="email" id="email" autocomplete="email" />
+            <input tabindex="6" type="email" name="email" id="email" autocomplete="email" />
             <label for="message">Message</label>
             <textarea
+              tabindex="7"
               name="message"
               id="message"
               rows="5"
               autocomplete="off"
             ></textarea>
           </div>
-          <button class="contact_button">Envoyer</button>
+          <button tabindex="8" class="contact_button">Envoyer</button>
         </form>
       </div>
     </div>
@@ -80,7 +97,11 @@
         aria-describedby="lightboxTitle"
       >
         <header>
-          <img src="assets/icons/close-red.svg" onclick="closeLightbox()" />
+          <img
+            alt="Icone de fermeture de la lightbox"
+            src="assets/icons/close-red.svg"
+            onclick="closeLightbox()"
+          />
         </header>
         <div id="lightboxContent"></div>
       </div>
@@ -92,6 +113,8 @@
     <!-- Utils -->
     <script src="scripts/utils/contactForm.js"></script>
     <script src="scripts/utils/lightbox.js"></script>
+    <script src="scripts/utils/gallery.js"></script>
+    <script src="scripts/utils/filters.js"></script>
 
     <!-- Models -->
     <script src="scripts/models/Photographer.js"></script>
