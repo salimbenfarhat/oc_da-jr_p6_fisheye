@@ -8,12 +8,13 @@ class Api {
   }
 
   async get() {
-    return fetch(this._url)
-      .then((res) => res.json())
-      .catch((err) => {
-        console.log("Une erreur se produit", err);
-        throw err;
-      });
+    try {
+      const res = await fetch(this._url);
+      return await res.json();
+    } catch (err) {
+      console.log("An error occurred", err);
+      throw err;
+    }
   }
 }
 
