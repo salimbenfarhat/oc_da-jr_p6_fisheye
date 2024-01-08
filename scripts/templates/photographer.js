@@ -1,7 +1,7 @@
-let tabIndexCounter = 0;
 function photographerTemplate(data) {
   const { id, name, portrait, city, country, tagline, price } = data;
   const picture = `assets/photographers/${portrait}`;
+  let tabIndexCounter = 2;
 
   function getUserCardDOM() {
     const article = document.createElement("article");
@@ -53,8 +53,7 @@ function photographerTemplate(data) {
     h2.textContent = `${city}, ${country}`;
     p.textContent = tagline;
 
-    img.setAttribute("src", picture);
-    img.setAttribute("alt", name);
+    img.setAttribute("src", picture), img.setAttribute("alt", name), img.setAttribute("tabindex", 9);
     img.classList.add("avatar");
 
     photographerHeader.appendChild(h1);
@@ -64,67 +63,193 @@ function photographerTemplate(data) {
     return img;
   }
 
+  function displayFilters(photographerMedia) {
+    const dropdownContent = document.querySelector(".dropdown-content");
+    const dropbtn = document.querySelector(".dropbtn");
+    const filterButtons = Array.from(
+      document.querySelectorAll(".dropdown-content button")
+    );
+
+    const defaultButton = filterButtons.find(
+      (button) => button.id === "btn-popularity"
+    );
+    const btnPopularity = document.getElementById("btn-popularity");
+    const btnDate = document.getElementById("btn-date");
+    const btnTitle = document.getElementById("btn-title");
+    btnPopularity.addEventListener("click", function () {
+      sortByPopularity(photographerMedia, displayPhotographerGallery);
+      updateTabindex(btnPopularity);
+    });
+    btnDate.addEventListener("click", function () {
+      sortByDate(photographerMedia, displayPhotographerGallery);
+      updateTabindex(btnDate);
+    });
+    btnTitle.addEventListener("click", function () {
+      sortByTitle(photographerMedia, displayPhotographerGallery);
+      updateTabindex(btnTitle);
+    });
+    function updateTabindex(activeButton) {
+      filterButtons.forEach((button) => {
+          const tabIndex = button === activeButton ? 10 : 10;
+          button.setAttribute("tabindex", tabIndex);
+      });
+    }
+    dropbtn.textContent = defaultButton.textContent;
+    defaultButton.classList.add("active");
+    dropbtn.innerHTML =
+      dropbtn.textContent +
+      ' <i class="fa-solid fa-chevron-up rotate" aria-hidden="true"></i>';
+      
+    dropbtn.addEventListener("click", (event) => {
+      event.stopPropagation(); 
+      const isHidden = dropdownContent.classList.contains("hide-menu");
+      if (isHidden) {
+        dropdownContent.classList.remove("hide-menu");
+        dropbtn.innerHTML =
+          dropbtn.textContent +
+          ' <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>';
+      } else {
+        dropdownContent.classList.add("hide-menu");
+        dropbtn.innerHTML =
+          dropbtn.textContent +
+          ' <i class="fa-solid fa-chevron-up rotate" aria-hidden="true"></i>';
+      }
+    });
+
+    dropdownContent.addEventListener("click", (event) => {
+      if (event.target.tagName === "BUTTON") {
+        filterButtons.forEach((button) => {
+          button.classList.remove("active");
+        });
+        event.target.classList.add("active");
+        dropbtn.textContent = event.target.textContent;
+        const activeButtonIndex = filterButtons.indexOf(event.target);
+        const reorderedButtons = [
+          filterButtons[activeButtonIndex],
+          ...filterButtons.slice(0, activeButtonIndex),
+          ...filterButtons.slice(activeButtonIndex + 1),
+        ];
+        dropdownContent.innerHTML = "";
+        reorderedButtons.forEach((button) => {
+          dropdownContent.appendChild(button.parentElement);
+        });
+      }
+    });
+
+    document.addEventListener("click", () => {
+      if (!dropdownContent.classList.contains("hide-menu")) {
+        dropdownContent.classList.add("hide-menu");
+        dropbtn.innerHTML =
+          dropbtn.textContent +
+          ' <i class="fa-solid fa-chevron-up rotate" aria-hidden="true"></i>';
+      }
+    });
+  }
+
   function displayPhotographerGallery(photographer, photographerMedia) {
     const gallery = document.querySelector(".gallery");
     const mediaFactory = new MediaFactory();
-
+    let tabindexCount = 11;
+  
     if (gallery && photographer) {
+      let totalLikes = 0;
       const photographerId = photographer.id;
+      const price = photographer.price || 0;
+  
       const photographerMediaFiltered = photographerMedia.filter(
         (mediaData) => mediaData.photographerId === photographerId
       );
-
+  
+      gallery.innerHTML = "";
+  
       photographerMediaFiltered.forEach((mediaData) => {
         const media = mediaFactory.createMedia({
           ...mediaData,
           photographer: photographer.name,
         });
-
+  
         const mediaElement = document.createElement(
           media.type === "image" ? "img" : "video"
         );
         const mediaLink = document.createElement("a");
         const card = document.createElement("article");
         const figure = document.createElement("figure");
-        const mediaContainer = document.createElement("div");
         const figcaption = document.createElement("figcaption");
         const titleElement = document.createElement("h2");
-        const likesNumber = document.createElement("span");
+        const likesContainer = document.createElement("span");
         const heartIcon = document.createElement("i");
-
-        mediaContainer.classList.add("media-container");
-        mediaContainer.appendChild(mediaElement);
-
+  
+        // Image
         mediaElement.src = media.src;
         mediaElement.alt = media.title;
-        titleElement.textContent = media.title;
-        likesNumber.textContent = `${media.likes} `;
+  
+        // Link container
+        mediaLink.classList.add("media-container");
+        mediaLink.setAttribute("title", "Lilac breasted roller, closeup view");
+        mediaLink.appendChild(mediaElement);
+        mediaLink.setAttribute("tabindex", tabindexCount);
+        tabindexCount++;
+  
+        // Likes container
+        likesContainer.setAttribute("tabindex", tabindexCount);
+        tabindexCount++;
+  
         heartIcon.className = "fas fa-heart";
-
-        likesNumber.appendChild(heartIcon);
-        figcaption.appendChild(titleElement);
-        figcaption.appendChild(likesNumber);
-        figure.appendChild(mediaContainer);
-        figure.appendChild(figcaption);
-        card.appendChild(figure);
-
-        mediaLink.setAttribute("role", "link");
+        heartIcon.setAttribute("aria-label", "likes");
+        likesContainer.appendChild(heartIcon);
+  
+        const likesNumber = document.createElement("span");
+        likesNumber.textContent = media.likes;
+        likesContainer.appendChild(likesNumber);
+  
+        titleElement.textContent = media.title;
+  
+        mediaLink.setAttribute("role", "button");
         mediaLink.setAttribute("href", "#");
         mediaLink.setAttribute("data-media", media.id);
-        mediaLink.onclick = function () {
+        mediaLink.onclick = function (event) {
+          event.preventDefault();
           displayLightbox(media, photographerMediaFiltered);
         };
-
-        mediaLink.appendChild(card);
-        gallery.appendChild(mediaLink);
+  
+        likesContainer.addEventListener("click", function () {
+          const currentLikes = parseInt(likesNumber.textContent, 10);
+          const isLiked = heartIcon.classList.contains("liked");
+  
+          if (isLiked) {
+            likesNumber.textContent = currentLikes - 1;
+            heartIcon.classList.remove("liked");
+          } else {
+            likesNumber.textContent = currentLikes + 1;
+            heartIcon.classList.add("liked");
+          }
+  
+          totalLikes = isLiked ? totalLikes - 1 : totalLikes + 1;
+          updateTotalLikes(totalLikes);
+        });
+  
+        // Add elements to DOM
+        figcaption.appendChild(titleElement);
+        figcaption.appendChild(likesContainer);
+        figure.appendChild(mediaLink);
+        figure.appendChild(figcaption);
+        card.appendChild(figure);
+  
+        totalLikes += media.likes;
+        gallery.appendChild(card);
       });
+      updateTotalLikes(totalLikes);
+      updatePrice(price);
     }
   }
+  
+  
 
   return {
     picture,
     getUserCardDOM,
     getCurrentUserCardDOM,
+    displayFilters,
     displayPhotographerGallery,
   };
 }
