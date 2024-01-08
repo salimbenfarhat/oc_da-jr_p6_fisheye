@@ -1,8 +1,14 @@
+let isTitleAdded = false;
 function displayModal() {
   const modal = document.getElementById("contact_modal");
   const modalHeaderTitleName = modal.querySelector(".modal header h2");
   const modalForm = modal.querySelector("form");
-  modalHeaderTitleName.insertAdjacentHTML("beforeend", "<br>Mimi Keel");
+  const closeButton = document.querySelector("#contact_modal img");
+
+  if (!isTitleAdded) {
+    modalHeaderTitleName.innerHTML += "<br>Mimi Keel";
+    isTitleAdded = true;
+  }
 
   modalForm.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -40,6 +46,13 @@ function displayModal() {
   });
 
   modal.style.display = "flex";
+ 
+  closeButton.addEventListener("keydown", function(event) {
+    if (event.keyCode === 13) {
+      closeModal();
+    }
+  });
+  modalForm.addEventListener("keydown", function(event) { if (event.keyCode === 13) { modalForm.submit(); } });
 }
 
 function closeModal() {

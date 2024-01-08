@@ -32,7 +32,6 @@ function displayLightbox(currentMedia, allMedia) {
   }
 
   let lightboxMediaElement;
-
   let lightboxTitleElement;
 
   if (currentMedia.type === "image") {
@@ -50,6 +49,7 @@ function displayLightbox(currentMedia, allMedia) {
     throw new Error("Le type du média courant n'est pas reconnu");
   }
   lightboxTitleElement = document.createElement("h2");
+  lightboxTitleElement.id = "lightboxTitle";
   lightboxTitleElement.textContent = currentMedia.title;
 
   lightboxContent.appendChild(lightboxMediaElement);
