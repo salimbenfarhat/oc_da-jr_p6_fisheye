@@ -1,3 +1,5 @@
+let currentPhotographer = null;
+
 async function getPhotographerById(id) {
   const response = new PhotographerApi("data/photographers.json");
   console.log("Réponse: ", response);
@@ -7,7 +9,7 @@ async function getPhotographerById(id) {
   const media = data.media;
   console.log(media);
 
-  const currentPhotographer = photographers.find(
+  currentPhotographer = photographers.find(
     (photographer) => photographer.id == id
   );
   const photographerMedia = media.filter((item) => item.photographerId == id);
@@ -21,14 +23,12 @@ async function displayData(data) {
   const photographerModel = new photographerTemplate(data.currentPhotographer);
   const userCardDOM = photographerModel.getCurrentUserCardDOM();
   photographersSection.appendChild(userCardDOM);
-  currentPhotographer = data.currentPhotographer;
+  photographerModel.displayFilters(data.photographerMedia);
   photographerModel.displayPhotographerGallery(
     data.currentPhotographer,
     data.photographerMedia
   );
 }
-
-let currentPhotographer = null;
 
 async function init() {
   const urlParams = new URLSearchParams(window.location.search);
