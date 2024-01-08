@@ -5,7 +5,7 @@ class MediaFactory {
     } else if (data.video) {
       return new Video(data);
     } else {
-      throw "Type de media inconnu";
+      throw new Error("Unknown media type");
     }
   }
 }
