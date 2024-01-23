@@ -1,8 +1,10 @@
+/*
+  Modèle de photographe : Génère des éléments DOM pour représenter un photographe dans l'interface utilisateur.
+*/
 function photographerTemplate(data) {
   const { id, name, portrait, city, country, tagline, price } = data;
   const picture = `assets/photographers/${portrait}`;
-  let tabIndexCounter = 2;
-
+  // Crée un élément DOM représentant une carte utilisateur pour la liste des photographes.
   function getUserCardDOM() {
     const article = document.createElement("article");
     const a = document.createElement("a");
@@ -14,11 +16,10 @@ function photographerTemplate(data) {
     const pPrice = document.createElement("p");
 
     a.href = `photographer.html?id=${id}`;
-    a.setAttribute("tabindex", tabIndexCounter);
-    tabIndexCounter++;
-
+    a.setAttribute("alt", name);
     img.setAttribute("src", picture);
-    img.setAttribute("alt", name);
+    img.setAttribute("alt", "Profile de " + name);
+    
     img.classList.add("avatar");
 
     h2.textContent = name;
@@ -40,7 +41,7 @@ function photographerTemplate(data) {
 
     return article;
   }
-
+  // Crée un élément DOM représentant la carte utilisateur actuelle dans la page du photographe.
   function getCurrentUserCardDOM() {
     const photographerHeader = document.querySelector(".photograph-info");
     const picture = `assets/photographers/${portrait}`;
@@ -62,7 +63,7 @@ function photographerTemplate(data) {
 
     return img;
   }
-
+  // Affiche les filtres de tri dans la page du photographe.
   function displayFilters(photographerMedia) {
     const dropdownContent = document.querySelector(".dropdown-content");
     const dropbtn = document.querySelector(".dropbtn");
@@ -88,17 +89,33 @@ function photographerTemplate(data) {
       sortByTitle(photographerMedia, displayPhotographerGallery);
       updateTabindex(btnTitle);
     });
+    
+    let selectedButton = defaultButton;
+
     function updateTabindex(activeButton) {
-      filterButtons.forEach((button) => {
-          const tabIndex = button === activeButton ? 10 : 10;
-          button.setAttribute("tabindex", tabIndex);
-      });
+        filterButtons.forEach((button) => {
+            const isSelected = button === activeButton;
+            const tabIndex = isSelected ? 10 : 10;
+            const ariaSelected = isSelected ? "true" : "false";
+
+            button.setAttribute("tabindex", tabIndex);
+            button.setAttribute("aria-selected", ariaSelected);
+
+            if (isSelected) {
+                button.classList.add("active");
+            } else {
+                button.classList.remove("active");
+            }
+        });
+
+        selectedButton = activeButton;
     }
+
     dropbtn.textContent = defaultButton.textContent;
     defaultButton.classList.add("active");
     dropbtn.innerHTML =
       dropbtn.textContent +
-      ' <i class="fa-solid fa-chevron-up rotate" aria-hidden="true"></i>';
+  ' <em class="fa-solid fa-chevron-up rotate" aria-hidden="true"></em>';
       
     dropbtn.addEventListener("click", (event) => {
       event.stopPropagation(); 
@@ -107,32 +124,38 @@ function photographerTemplate(data) {
         dropdownContent.classList.remove("hide-menu");
         dropbtn.innerHTML =
           dropbtn.textContent +
-          ' <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>';
+          ' <em class="fa-solid fa-chevron-up" aria-hidden="true"></em>';
       } else {
         dropdownContent.classList.add("hide-menu");
         dropbtn.innerHTML =
           dropbtn.textContent +
-          ' <i class="fa-solid fa-chevron-up rotate" aria-hidden="true"></i>';
+          ' <em class="fa-solid fa-chevron-up rotate" aria-hidden="true"></em>';
       }
     });
 
     dropdownContent.addEventListener("click", (event) => {
       if (event.target.tagName === "BUTTON") {
-        filterButtons.forEach((button) => {
-          button.classList.remove("active");
-        });
-        event.target.classList.add("active");
-        dropbtn.textContent = event.target.textContent;
-        const activeButtonIndex = filterButtons.indexOf(event.target);
-        const reorderedButtons = [
-          filterButtons[activeButtonIndex],
-          ...filterButtons.slice(0, activeButtonIndex),
-          ...filterButtons.slice(activeButtonIndex + 1),
-        ];
-        dropdownContent.innerHTML = "";
-        reorderedButtons.forEach((button) => {
-          dropdownContent.appendChild(button.parentElement);
-        });
+          filterButtons.forEach((button) => {
+              button.classList.remove("active");
+          });
+
+          event.target.classList.add("active");
+          dropbtn.textContent = event.target.textContent;
+
+          updateTabindex(event.target);
+          selectedButton = event.target;
+
+          const activeButtonIndex = filterButtons.indexOf(event.target);
+          const reorderedButtons = [
+              filterButtons[activeButtonIndex],
+              ...filterButtons.slice(0, activeButtonIndex),
+              ...filterButtons.slice(activeButtonIndex + 1),
+          ];
+
+          dropdownContent.innerHTML = "";
+          reorderedButtons.forEach((button) => {
+              dropdownContent.appendChild(button.parentElement);
+          });
       }
     });
 
@@ -141,15 +164,15 @@ function photographerTemplate(data) {
         dropdownContent.classList.add("hide-menu");
         dropbtn.innerHTML =
           dropbtn.textContent +
-          ' <i class="fa-solid fa-chevron-up rotate" aria-hidden="true"></i>';
+          ' <em class="fa-solid fa-chevron-up rotate" aria-hidden="true"></em>';
       }
     });
   }
-
+  // Affiche la galerie de médias pour un photographe donné.
   function displayPhotographerGallery(photographer, photographerMedia) {
     const gallery = document.querySelector(".gallery");
     const mediaFactory = new MediaFactory();
-    let tabindexCount = 11;
+    let tabindexCount = 13;
   
     if (gallery && photographer) {
       let totalLikes = 0;
@@ -243,8 +266,6 @@ function photographerTemplate(data) {
     }
   }
   
-  
-
   return {
     picture,
     getUserCardDOM,
