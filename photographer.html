@@ -30,19 +30,17 @@
       </div>
       <div class="photograph-gallery">
         <div class="filter">
-          <label>Trier par :</label>
-          <div class="dropdown" role="listbox" aria-haspopup="listbox" aria-expanded="false">
-            <button class="dropbtn" alt="Order by" tabindex="10" id="submitContactModalFormBtn">
+          <label for="btn-popularity">Trier par :</label>
+          <div class="dropdown" role="group" aria-haspopup="listbox" aria-expanded="false">
+            <button class="dropbtn" alt="Order by" tabindex="10" id="btn-popularity">
               Popularité
-              <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
+              <em class="fa-solid fa-chevron-up" aria-hidden="true"></em>
             </button>
-            <ul class="dropdown-content hide-menu" role="listbox" aria-activedescendant="btn-popularity">
-              <li>
-                <button id="btn-popularity" role="option" aria-selected="true">Popularité</button>
-              </li>
-              <li><button id="btn-date" role="option" aria-selected="false">Date</button></li>
-              <li><button id="btn-title" role="option" aria-selected="false">Titre</button></li>
-            </ul>
+            <div class="dropdown-content hide-menu" role="listbox" aria-activedescendant="btn-popularity" title="Liste déroulante des options de tri">
+              <button id="btn-popularity" role="option">Popularité</button>
+              <button tabindex="10" id="btn-date" role="option">Date</button>
+              <button tabindex="10" id="btn-title" role="option">Titre</button>
+            </div>
           </div>
         </div>
         <div class="gallery"></div>
@@ -58,7 +56,6 @@
         aria-hidden="true"
         role="dialog"
         aria-describedby="modalTitle"
-        tabindex="-1"
       >
         <header>
           <h2 id="modalTitle">Contactez-moi</h2>
@@ -111,11 +108,12 @@
     <script src="scripts/factories/MediaFactory.js"></script>
 
     <!-- Utils -->
+    <script src="scripts/utils/keyboardListeners.js"></script>
     <script src="scripts/utils/contactForm.js"></script>
     <script src="scripts/utils/lightbox.js"></script>
     <script src="scripts/utils/gallery.js"></script>
     <script src="scripts/utils/filters.js"></script>
-
+    
     <!-- Models -->
     <script src="scripts/models/Photographer.js"></script>
     <script src="scripts/models/Media.js"></script>
