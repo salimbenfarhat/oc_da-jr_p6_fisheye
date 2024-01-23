@@ -154,7 +154,7 @@ function photographerTemplate(data) {
 
           dropdownContent.innerHTML = "";
           reorderedButtons.forEach((button) => {
-              dropdownContent.appendChild(button.parentElement);
+              dropdownContent.appendChild(button);
           });
       }
     });
