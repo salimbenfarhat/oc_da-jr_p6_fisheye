@@ -1,3 +1,4 @@
+// Récupération des photographes à partir d'une API
 async function getPhotographers() {
   const response = new PhotographerApi("data/photographers.json");
   const photographers = await response.getPhotographers();
@@ -6,6 +7,7 @@ async function getPhotographers() {
   return { photographers };
 }
 
+// Affichage des données récupérées dans le DOM
 async function displayData({ photographers }) {
   const photographersSection = document.querySelector(".photographer_section");
   photographers.forEach((photographer) => {
@@ -15,6 +17,7 @@ async function displayData({ photographers }) {
   });
 }
 
+// Initialisation de ces données au chargement de la page
 async function init() {
   const { photographers } = await getPhotographers();
   displayData({ photographers });
