@@ -1,4 +1,7 @@
-// Récupération des photographes à partir d'une API
+/*
+  Récupère les photographes à partir d'une API.
+  @returns {Object} - Contient un tableau d'objets représentant les photographes.
+*/
 async function getPhotographers() {
   const response = new PhotographerApi("data/photographers.json");
   const photographers = await response.getPhotographers();
@@ -6,8 +9,10 @@ async function getPhotographers() {
   console.log("Photographes :", photographers);
   return { photographers };
 }
-
-// Affichage des données récupérées dans le DOM
+/*
+  Affiche les données récupérées dans le DOM.
+  @param {Object} data - Contient un tableau d'objets représentant les photographes.
+*/
 async function displayData({ photographers }) {
   const photographersSection = document.querySelector(".photographer_section");
   photographers.forEach((photographer) => {
@@ -16,11 +21,12 @@ async function displayData({ photographers }) {
     photographersSection.appendChild(userCardDOM);
   });
 }
-
-// Initialisation de ces données au chargement de la page
+/*
+  Initialise les données au chargement de la page en récupérant les photographes et en les affichant.
+*/
 async function init() {
   const { photographers } = await getPhotographers();
   displayData({ photographers });
 }
-
+// Appel de la fonction d'initialisation au chargement de la page
 init();
