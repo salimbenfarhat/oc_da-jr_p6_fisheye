@@ -6,13 +6,9 @@ let currentPhotographer = null;
 */
 async function getPhotographerById(id) {
   const response = new PhotographerApi("data/photographers.json");
-  console.log("Réponse: ", response);
   const data = await response.get();
   const photographers = data.photographers;
-  console.log("Photographes :", photographers);
   const media = data.media;
-  console.log(media);
-
   currentPhotographer = photographers.find(
     (photographer) => photographer.id == id
   );
@@ -24,8 +20,6 @@ async function getPhotographerById(id) {
   @param {Object} data - Contient le photographe actuel et les médias associés.
 */
 async function displayData(data) {
-  console.log("Médias :", data.photographerMedia);
-
   const photographersSection = document.querySelector(".photograph-header");
   const photographerModel = new photographerTemplate(data.currentPhotographer);
   const userCardDOM = photographerModel.getCurrentUserCardDOM();

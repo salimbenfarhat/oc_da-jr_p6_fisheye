@@ -5,8 +5,6 @@
 async function getPhotographers() {
   const response = new PhotographerApi("data/photographers.json");
   const photographers = await response.getPhotographers();
-  console.log("Réponse : ", response);
-  console.log("Photographes :", photographers);
   return { photographers };
 }
 /*

@@ -11,14 +11,12 @@ function updateLightboxContent() {
 }
 function showNextMedia() {
   currentIndex = (currentIndex + 1) % filteredMedia.length;
-  console.log("Current Index", currentIndex);
   updateLightboxContent();
 }
 
 function showPreviousMedia() {
   currentIndex =
     (currentIndex - 1 + filteredMedia.length) % filteredMedia.length;
-  console.log("Current Index", currentIndex);
   updateLightboxContent();
 }
 
