@@ -191,9 +191,10 @@ function photographerTemplate(data) {
           photographer: photographer.name,
         });
   
-        const mediaElement = document.createElement(
-          media.type === "image" ? "img" : "video"
-        );
+        const mediaElement = media.type === "image" ? document.createElement("img") : media.type === "video" ? document.createElement("video"): (() => {
+          console.error("Type de média inconnu :", media.type);
+        })();
+
         const mediaLink = document.createElement("a");
         const card = document.createElement("article");
         const figure = document.createElement("figure");
@@ -202,9 +203,14 @@ function photographerTemplate(data) {
         const likesContainer = document.createElement("span");
         const heartIcon = document.createElement("i");
   
-        // Image
+        // Media
         mediaElement.src = media.src;
-        mediaElement.alt = media.title;
+        if (media.type === "image") {
+          mediaElement.alt = "Photo of " + media.title;
+        } else if (media.type === "video") {
+          mediaElement.controls = true;
+          figcaption.textContent = "Video: " + media.title;
+        }
   
         // Link container
         mediaLink.classList.add("media-container");
