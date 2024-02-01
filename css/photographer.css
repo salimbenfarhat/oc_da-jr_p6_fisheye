@@ -222,6 +222,10 @@
   color: #db8876;
 }
 
+.gallery figcaption span b {
+  font-weight: 500;
+}
+
 .gallery figcaption span i.liked,
 .gallery figcaption span i:hover {
   color: #901c1c;

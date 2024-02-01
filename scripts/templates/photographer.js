@@ -206,10 +206,10 @@ function photographerTemplate(data) {
         // Media
         mediaElement.src = media.src;
         if (media.type === "image") {
-          mediaElement.alt = "Photo of " + media.title;
+          mediaElement.alt = "A phtot titled :" + media.title;
         } else if (media.type === "video") {
           mediaElement.controls = true;
-          figcaption.textContent = "Video: " + media.title;
+          mediaElement.setAttribute("aria-label", "A video titled :" + media.title);
         }
   
         // Link container
@@ -224,10 +224,11 @@ function photographerTemplate(data) {
         tabindexCount++;
   
         heartIcon.className = "fas fa-heart";
+        heartIcon.setAttribute("role", "img");
         heartIcon.setAttribute("aria-label", "likes");
         likesContainer.appendChild(heartIcon);
   
-        const likesNumber = document.createElement("span");
+        const likesNumber = document.createElement("b");
         likesNumber.textContent = media.likes;
         likesContainer.appendChild(likesNumber);
   
