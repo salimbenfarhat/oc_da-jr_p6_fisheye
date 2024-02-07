@@ -57,9 +57,16 @@ function displayLightbox(currentMedia, allMedia) {
   leftArrow.className = "fas fa-chevron-left arrow";
   leftArrow.addEventListener("click", showPreviousMedia);
 
+
   const rightArrow = document.createElement("i");
   rightArrow.className = "fas fa-chevron-right arrow";
   rightArrow.addEventListener("click", showNextMedia);
+
+  // Remplacez les écouteurs d'événements individuels pour les flèches(précédent/suivant) par addArrowKeyListener
+  addArrowKeyListener(showPreviousMedia, showNextMedia);
+
+  // Activation de la fermeture de la lightbox avec la touche Escape
+  addEscapeListener(closeLightbox);
 
   lightboxContent.appendChild(leftArrow);
   lightboxContent.appendChild(rightArrow);

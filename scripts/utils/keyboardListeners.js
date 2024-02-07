@@ -20,3 +20,13 @@ function addEnterListener(element, callback) {
       }
     });
 }
+
+function addArrowKeyListener(callbackLeft, callbackRight) {
+  document.addEventListener("keydown", function(event) {
+      if (event.key === "ArrowLeft") {
+          callbackLeft();
+      } else if (event.key === "ArrowRight") {
+          callbackRight();
+      }
+  });
+}

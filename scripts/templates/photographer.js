@@ -173,7 +173,7 @@ function photographerTemplate(data) {
     const gallery = document.querySelector(".gallery");
     const likesAndDislikes = getLikesAndDislikes();
     const mediaFactory = new MediaFactory();
-    let tabindexCount = 13;
+    let tabindexCount = 11;
   
     if (gallery && photographer) {
       let totalLikes = 0;
