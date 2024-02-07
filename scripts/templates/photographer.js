@@ -171,21 +171,17 @@ function photographerTemplate(data) {
   // Affiche la galerie de médias pour un photographe donné.
   function displayPhotographerGallery(photographer, photographerMedia) {
     const gallery = document.querySelector(".gallery");
+    const likesAndDislikes = getLikesAndDislikes();
     const mediaFactory = new MediaFactory();
     let tabindexCount = 13;
   
     if (gallery && photographer) {
       let totalLikes = 0;
-      const photographerId = photographer.id;
       const price = photographer.price || 0;
-  
-      const photographerMediaFiltered = photographerMedia.filter(
-        (mediaData) => mediaData.photographerId === photographerId
-      );
-  
+      
       gallery.innerHTML = "";
-  
-      photographerMediaFiltered.forEach((mediaData) => {
+
+      photographerMedia.forEach((mediaData) => {
         const media = mediaFactory.createMedia({
           ...mediaData,
           photographer: photographer.name,
@@ -212,53 +208,84 @@ function photographerTemplate(data) {
           mediaElement.setAttribute("aria-label", "A video titled :" + media.title);
         }
   
-        // Link container
+        // Configuration du conteneur du lien
         mediaLink.classList.add("media-container");
         mediaLink.setAttribute("title", "Lilac breasted roller, closeup view");
         mediaLink.appendChild(mediaElement);
         mediaLink.setAttribute("tabindex", tabindexCount);
         tabindexCount++;
   
-        // Likes container
+        // Configuration du conteneur des likes
         likesContainer.setAttribute("tabindex", tabindexCount);
         tabindexCount++;
   
         heartIcon.className = "fas fa-heart";
         heartIcon.setAttribute("role", "img");
         heartIcon.setAttribute("aria-label", "likes");
+
+        // Gestion de l'état initial du like
+        if (likesAndDislikes[media.id] === 'liked') {
+          heartIcon.classList.add('liked');
+        }
+
         likesContainer.appendChild(heartIcon);
-  
+        
+        // Si les likes de l'utilisateur sont indéfinis, les définir sur les likes actuels
+        if(mediaData.userLikes === undefined) {
+          mediaData.userLikes = mediaData.likes;
+        } 
+
+        // Met à jour l'apparence du like en fonction de l'état actuel
+        if(mediaData.userLikes == mediaData.likes) {
+          heartIcon.classList.remove("liked");
+        } else {
+          heartIcon.classList.add("liked");
+        }
+
         const likesNumber = document.createElement("b");
-        likesNumber.textContent = media.likes;
+        likesNumber.textContent = mediaData.userLikes;
         likesContainer.appendChild(likesNumber);
   
         titleElement.textContent = media.title;
-  
+        
+        // Configuration du lien du média
         mediaLink.setAttribute("role", "button");
         mediaLink.setAttribute("href", "#");
         mediaLink.setAttribute("data-media", media.id);
         mediaLink.onclick = function (event) {
           event.preventDefault();
-          displayLightbox(media, photographerMediaFiltered);
+          displayLightbox(media, photographerMedia);
         };
-  
+        // Gestion de l'événement de la touche "Entrée" pour ouvrir la lightbox
+        mediaLink.addEventListener("keydown", function (event) {
+          if (event.code === "Enter") {
+            event.preventDefault();
+            displayLightbox(media, photographerMedia);
+          }
+        });
+        
+        // Gestion du clic sur l'icône de like
         likesContainer.addEventListener("click", function () {
           const currentLikes = parseInt(likesNumber.textContent, 10);
-          const isLiked = heartIcon.classList.contains("liked");
+          const isLiked = mediaData.likes !== mediaData.userLikes;
   
           if (isLiked) {
+            mediaData.userLikes = currentLikes - 1;
             likesNumber.textContent = currentLikes - 1;
             heartIcon.classList.remove("liked");
+            likesAndDislikes[media.id] = 'disliked'; 
           } else {
+            mediaData.userLikes = currentLikes + 1;
             likesNumber.textContent = currentLikes + 1;
             heartIcon.classList.add("liked");
+            likesAndDislikes[media.id] = 'liked';
           }
-  
+          updateLikesAndDislikes(likesAndDislikes);
           totalLikes = isLiked ? totalLikes - 1 : totalLikes + 1;
           updateTotalLikes(totalLikes);
         });
   
-        // Add elements to DOM
+        // Ajoute les éléments au DOM
         figcaption.appendChild(titleElement);
         figcaption.appendChild(likesContainer);
         figure.appendChild(mediaLink);
@@ -268,6 +295,8 @@ function photographerTemplate(data) {
         totalLikes += media.likes;
         gallery.appendChild(card);
       });
+
+      // Met à jour le nombre total de likes et le prix du photographe
       updateTotalLikes(totalLikes);
       updatePrice(price);
     }

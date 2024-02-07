@@ -13,7 +13,7 @@ async function getPhotographerById(id) {
     (photographer) => photographer.id == id
   );
   const photographerMedia = media.filter((item) => item.photographerId == id);
-  return { currentPhotographer, photographerMedia, media };
+  return { currentPhotographer, photographerMedia };
 }
 /*
   Affiche les informations du photographe et ses médias associés sur la page HTML.
